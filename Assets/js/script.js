@@ -15,6 +15,22 @@ var lon;
 var coords;
 var city;
 
+
+// click event for my recent search buttons
+$(document).on("click", ".city-btn", function (event) {
+  var city = event.target.textContent;
+  apiCall(city);
+});
+
+// handle form submit
+form.submit(function (e) {
+  e.preventDefault();
+  var temp = input.val();
+  // generate API call
+  apiCall(temp);
+  setRecents(temp);
+});
+
 // initialize function that grabs recent searches from local storage
 function init() {
   var stored = JSON.parse(localStorage.getItem("recentArr"));
@@ -30,7 +46,7 @@ function init() {
   }
 }
 
-// puts live clock in the header
+// puts date and live clock in the header
 function setTime() {
   // sets the date
   day.text(moment().format("MMM Do, YYYY"));
@@ -41,6 +57,7 @@ function setTime() {
   }, 1000);
 }
 
+// set new recent search
 function setRecents(city) {
   // check if we already have 10 stored searches, if yes then remove oldest one from both list and stored array
   if (recentSearches.childElementCount > 9) {
@@ -51,22 +68,15 @@ function setRecents(city) {
   // create new li with city and insert it at top of old searches
   var newBtn = document.createElement("button");
   newBtn.textContent = city;
-  recentSearches.append(newBtn);
+  newBtn.setAttribute("class", "city-btn")
+  // recentSearches.insertBefore(newBtn, recentSearches.firsChild);
   // update array for LS
   recentArr.unshift(city);
   localStorage.setItem("recentArr", JSON.stringify(recentArr));
   console.log("test")
 }
 
-// handle form submit
-form.submit(function (e) {
-  e.preventDefault();
-  var temp = input.val();
-  // generate API call
-  apiCall(temp);
-  setRecents(temp);
-});
-
+// fetch request
 function apiCall(city) {
   weatherUrl = generateUrl(city, weather);
   fetch(weatherUrl)
@@ -99,6 +109,7 @@ function generateUrl(location, baseUrl) {
   return baseUrl;
 }
 
+// set current conditions
 function setCurrent(data) {
   // change city name
   $("#current-title").html(
@@ -112,14 +123,6 @@ function setCurrent(data) {
   $("#wind").text("Wind: " + data.wind.speed + "mph");
   // refresh city name (idk why i have to do this, but city is undefined at this point)
   city = data.name;
-}
-
-function convert(temp) {
-  // get temp
-  // convert to F
-  // round
-  var faren = Math.round((temp - 273) * 1.8 + 32);
-  return faren
 }
 
 // set 5 day forecast
@@ -140,11 +143,13 @@ function setForecast(data) {
   document.getElementById("uv").textContent = "UV Index: " + data.current.uvi;
 }
 
-// click event for my recent search buttons
-$(document).on("click", ".city-btn", function (event) {
-  var city = event.target.textContent;
-  apiCall(city);
-});
+function convert(temp) {
+  // get temp
+  // convert to F
+  // round
+  var faren = Math.round((temp - 273) * 1.8 + 32);
+  return faren
+}
 
 // default seattle weather
 apiCall("Seattle");
