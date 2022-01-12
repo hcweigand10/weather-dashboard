@@ -1,0 +1,62 @@
+/* universal selector to reset margins, padding, and font */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+/* color variables */
+:root {
+    --dark: rgb(0, 62, 65);
+    --light: rgb(164, 226, 235);
+}
+
+#recent-searches {
+    list-style-type: none;
+}
+
+header {
+    background-image: linear-gradient(to right, var(--light), var(--dark));
+    color: aliceblue;
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+/* font size wont change  */
+header h1 {
+    font-size: 10vh;
+    margin-bottom: 0;
+}
+
+/* same here */
+header p {
+    font-size: 5vh;
+    margin-bottom: 0;
+}
+
+main {
+    width: 95%;
+    margin: 0 auto;
+}
+
+#current-cond {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.card {
+    background-color: blue;
+    color: white;
+    margin-right: 20px;
+}
+
+.city-btn {
+    width: 95%;
+    height: 50px;
+    margin-top: 30px;
+    font-size: 24px;
+    border: none;
+    background-color: lightgray;
+}
